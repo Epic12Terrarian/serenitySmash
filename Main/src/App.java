@@ -4,20 +4,24 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 class App {
     static GameFrame GameFrame = new GameFrame(); //declared with title
     static JLabel playCharP1Identifier = new JLabel("Character/Stock amount");
     static JLabel playCharP2Identifier = new JLabel("Character/Stock amount");
-    static String[] playerCharacter = {"-Pick a fighter-", "Kaiser", "Sol", "Bronze Valiant", "Artemis", "Cider", "Shaye", "Sven", "Omikron", "Kain", "Vivi", "Minty", "(Arctic Delta's pick, nothing here atm)", "(Arctic Delta's pick, nothing here atm)", "(Cat's pick, nothing here atm)", "Random"};
-    static Integer[] playerCharacterInt = {null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    static String[] playerCharacter = {"-Pick a fighter-", "Kaiser", "Sol", "Bronze Valiant", "Artemis", "Cider", "Omikron", "Kain", "Vivi", "Minty", "Random"};
+//    static Integer[] playerCharacterInt = {69, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     static Integer[] numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69};
-    static String[] maps = {"Scorched Desert"};
+    static String[] maps = {"-Pick a Map-", "Scorched Desert"};
+    static Integer[] playerChar = {null, null};
+    static Integer map = null;
 
     static JComboBox<String> P1Character = new JComboBox<String>(playerCharacter);
     static JComboBox<String> P2Character = new JComboBox<String>(playerCharacter);
-    static JComboBox<String> MapChoice = new JComboBox<String>();
+    static JComboBox<String> MapChoice = new JComboBox<String>(maps);
     static JComboBox<Integer> P1Stocks = new JComboBox<Integer>(numbers);
     static JComboBox<Integer> P2Stocks = new JComboBox<Integer>(numbers);
 
@@ -30,6 +34,8 @@ class App {
     static ImageIcon titleScreenIcon = new ImageIcon("Main/src/images/TitleScreenCoverTemp.png");
     static JLabel titleScreenLabel = new JLabel(titleScreenIcon);
     static Integer menuScreen = 0;
+
+
     public static void main(String[] args) {
         ImageIcon AmongUs = new ImageIcon("Main/src/images/ViviBonkIcon.png");
         
@@ -62,6 +68,9 @@ class App {
 
         GameFrame.add(BackToTitleScreenButton);
         GameFrame.add(P1Character);
+        GameFrame.add(MapChoice);
+        MapChoice.setBounds(352, 160, 120, 20);
+        MapChoice.setVisible(false);
         P1Character.setBounds(216, 200, 120, 20);
         P1Character.setVisible(false);
         GameFrame.add(P1Stocks);
@@ -74,7 +83,7 @@ class App {
         P2Stocks.setBounds(484, 220, 40, 20);
         P2Stocks.setVisible(false);
         GameFrame.add(startFightButton);
-        startFightButton.setBounds(350, 300, startFightSize.width, startFightSize.height);
+        startFightButton.setBounds(360, 300, startFightSize.width, startFightSize.height);
         startFightButton.addActionListener(e -> startFight());
         startFightButton.setVisible(false);
         BackToTitleScreenButton.setBounds(0, 0, backButton.width, backButton.height);
@@ -133,6 +142,7 @@ class App {
         StartOnlineButton.setVisible(false);
 
         startFightButton.setVisible(true);
+        MapChoice.setVisible(true);
         P1Character.setVisible(true);
         P1Stocks.setVisible(true);
         P2Character.setVisible(true);
@@ -140,7 +150,17 @@ class App {
         GameFrame.setVisible(true);
     }
     public static void startFight() {
-
+        playerChar[0] = P1Character.getSelectedIndex();
+        playerChar[1] = P2Character.getSelectedIndex();
+        map = MapChoice.getSelectedIndex();
+        if (playerChar[0] == 0 || playerChar[1] == 0 || map == 0) {
+            JOptionPane.showMessageDialog(null, "Please select a character and or a map", "Warn", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        else {
+            System.exit(0);
+            // TODO Start the game in a new window
+        }
     }
     public static void backToStartMenu() {
         menuScreen = 1;
@@ -148,6 +168,7 @@ class App {
         StartOnlineButton.setVisible(true);
 
         startFightButton.setVisible(false);
+        MapChoice.setVisible(false);
         P1Character.setVisible(false);
         P1Stocks.setVisible(false);
         P2Character.setVisible(false);
